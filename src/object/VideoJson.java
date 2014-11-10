@@ -7,16 +7,8 @@ public class VideoJson {
 	private String type;
 	private String time;
 	private String  pictureip;
-	public VideoJson(String author, String ip, String name, String type,
-			String time, String pictureip) {
-		super();
-		this.author = author;
-		this.ip = ip;
-		this.name = name;
-		this.type = type;
-		this.time = time;
-		this.pictureip = pictureip;
-	}
+	private String introduction;
+	private int point;
 	public String getAuthor() {
 		return author;
 	}
@@ -53,10 +45,36 @@ public class VideoJson {
 	public void setPictureip(String pictureip) {
 		this.pictureip = pictureip;
 	}
+	public String getIntroduction() {
+		return introduction;
+	}
+	public void setIntroduction(String introduction) {
+		this.introduction = introduction;
+	}
+	public int getPoint() {
+		return point;
+	}
+	public void setPoint(int point) {
+		this.point = point;
+	}
 	@Override
 	public String toString() {
 		return "VideoJson [author=" + author + ", ip=" + ip + ", name=" + name
 				+ ", type=" + type + ", time=" + time + ", pictureip="
-				+ pictureip + "]";
+				+ pictureip + ", introduction=" + introduction + ", point="
+				+ point + "]";
 	}
+	public VideoJson(String author, String ip, String name, String type,
+			String time, String pictureip, String introduction, int point) {
+		super();
+		this.author = author;
+		this.ip = ip;
+		this.name = name;
+		this.type = type;
+		this.time = time;
+		this.pictureip = pictureip;
+		this.introduction = introduction;
+		this.point = point;
+	}
+	
 }

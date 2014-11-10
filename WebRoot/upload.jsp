@@ -32,7 +32,62 @@
 						<input name="type" type="text" id="type" size="20">
 					</td>
 				</tr>
-				
+				<tr>
+					<td>
+						视频问题：
+					</td>
+					<td>
+						<input name="type" type="text" id="problem" size="20"  >
+					</td>
+				</tr>
+				<tr>
+					<td>
+						选项A：
+					</td>
+					<td>
+						<input name="type" type="text" id="problemA" size="20"  >
+					</td>
+				</tr>
+				<tr>
+					<td>
+						选项B：
+					</td>
+					<td>
+						<input name="type" type="text" id="problemB" size="20"  >
+					</td>
+				</tr>
+					<tr>
+					<td>
+						选项C：
+					</td>
+					<td>
+						<input name="type" type="text" id="problemC" size="20"  >
+					</td>
+				</tr>
+					<tr>
+					<td>
+						选项D：
+					</td>
+					<td>
+						<input name="type" type="text" id="problemD" size="20"  >
+					</td>
+				</tr>
+				<tr>
+					<td>
+						问题弹出时间：
+					</td>
+					<td>
+						<input name="type" type="text" id="problemtime" size="20"  >
+					</td>
+				</tr>
+				<tr>
+					<td>
+						视频内容简介：
+					</td>
+					<td>
+						<input name="type" type="text" id="problemtime" size="20"  >
+					</td>
+				</tr>
 				<tr>
 					<td>
 						上传视频：

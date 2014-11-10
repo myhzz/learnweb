@@ -8,15 +8,17 @@ import java.sql.SQLException;
 
 
 
+
 import object.Video;
 import object.VideoJson;
 
 import com.DBConn;
 import com.google.gson.Gson;
 public class VideoDao {
+	private int  point;
 	public int insertVideo(Video cls)
 	{
-		String sql="insert into video values (null ,?,?,?,?,?,null,null)";
+		String sql="insert into video values (null ,?,?,?,?,?,?,null,?,?)";
 		try {
 			PreparedStatement state=DBConn.getConnection()
 					.prepareStatement(sql);
@@ -25,6 +27,9 @@ public class VideoDao {
 			state.setString(3, cls.getIp());
 			state.setString(4, cls.getName());
 			state.setString(5, cls.getType());
+			state.setString(6, cls.getProblem());
+			state.setString(7, cls.getIntroduction());
+			state.setInt(8, 0);
 			int result=state.executeUpdate();
 			return result;
 		} catch (SQLException e) {
@@ -52,6 +57,9 @@ public class VideoDao {
 			return 0;
 		}
 	}
+	
+	
+	
 
 	public int answerQues(String result,String name) throws SQLException
 	{
@@ -62,17 +70,54 @@ public class VideoDao {
 		int re=ps.executeUpdate();
 		return re;
 	}
-	public String judgeVideoIp(String name)
-	{
-		String sql="select * from video where username =?";
+	
+	
+	
+	public String   pointed(String time){
+		String sql="select * from video where time =?";
+		
 		try {
 			PreparedStatement state=DBConn.getConnection().
 					prepareStatement(sql);
-			state.setString(1, name);
+			state.setString(1, time);
 			ResultSet set=state.executeQuery();
 			if(set.next())
 			{
-				String ip=set.getString("ip");
+				point=set.getInt("point");
+		    }
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "查找异常";
+		}
+		sql = "update video set point = ? where time=? ";
+		try {
+			PreparedStatement state=DBConn.getConnection().prepareStatement(sql);
+			state.setInt(1, point+1);
+			state.setString(2, time);
+			int result=state.executeUpdate();
+		  return  "成功";
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "修改异常";
+		}
+	}
+	
+	
+	
+	public String judgeVideoProblem(String time)
+	{
+		String sql="select * from video where time =?";
+		try {
+			PreparedStatement state=DBConn.getConnection().
+					prepareStatement(sql);
+			state.setString(1, time);
+			ResultSet set=state.executeQuery();
+			if(set.next())
+			{
+				String ip=set.getString("promblem");
 				
 //			    Person person=new Person(pass, num, grade);
 //			    Gson gson=new Gson();
@@ -86,6 +131,9 @@ public class VideoDao {
 		}
 		return "";
 	}
+	
+	
+	
 //	sql="select * from 数据表 where字段名between 值1 and 值2"
 	public String judgeTenVideo(int start,int end)
 	{
@@ -96,7 +144,7 @@ public class VideoDao {
 			state.setInt(1, start);
 			state.setInt(1, end);
 			ResultSet set=state.executeQuery();
-			String JJson="";
+			
 			if(set.next())
 			{
 				String author=set.getString("author");
@@ -105,16 +153,55 @@ public class VideoDao {
 				String name=set.getString("name");
 				String type=set.getString("type");
 				String pictureip=set.getString("pictureip");
-				VideoJson video=new VideoJson(author, ip, name, type, time,pictureip);
+				String introduction=set.getString("introduction");
+				int point=set.getInt("point");
+				VideoJson video=new VideoJson(author, ip, name, type, time,pictureip,introduction,point);
 		        Gson gson=new Gson();
-		      JJson=JJson+gson.toJson(video);
+		        return gson.toJson(video);
 //			    Person person=new Person(pass, num, grade);
 //			    Gson gson=new Gson();
 //				return gson.toJson(person);
 //				return "password:"+pass+"\n"+"num:"+num+"\n"+"grade:"+grade;
 				
 			}
-			return JJson;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
+	}
+	
+	
+	public String judgeOneKindsVideo(String tpye)
+	{
+		String sql="select * from video where type = ? ";
+		try {
+			PreparedStatement state=DBConn.getConnection().
+					prepareStatement(sql);
+		   state.setString(1, tpye);
+			ResultSet set=state.executeQuery();
+			
+			if(set.next())
+			{
+				String author=set.getString("author");
+				String ip=set.getString("ip");
+				String time=set.getString("time");
+				String name=set.getString("name");
+				String type=set.getString("type");
+				String pictureip=set.getString("pictureip");
+				String problem=set.getString("problem");
+				int point =set.getInt("point");
+				
+				VideoJson video=new VideoJson(author, ip, name, type, time,pictureip,problem,point);
+		        Gson gson=new Gson();
+		        return gson.toJson(video);
+//			    Person person=new Person(pass, num, grade);
+//			    Gson gson=new Gson();
+//				return gson.toJson(person);
+//				return "password:"+pass+"\n"+"num:"+num+"\n"+"grade:"+grade;
+				
+			}
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

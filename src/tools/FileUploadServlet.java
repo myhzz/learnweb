@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import object.TProblem;
 import object.Video;
 
 import org.apache.commons.fileupload.FileItem;
@@ -19,13 +20,15 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import com.google.gson.Gson;
+
 import dao.VideoDao;
 
 public class FileUploadServlet extends HttpServlet {
 	private static final long serialVersionUID = 20140126L;
 	private ServletContext sc;
 	private String savePath;
-	private String mes[] = new String[5];
+	private String mes[] = new String[20];
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -58,12 +61,14 @@ public class FileUploadServlet extends HttpServlet {
 							+ item.getString("UTF-8"));
 					mes[i++] = item.getString("UTF-8") + "";
 				} else {
-					
+
 					if (item.getName() != null && !item.getName().equals("")) {
-						String []Ladr=item.getName().split("\\.");
-						
-						String Ladrr=Ladr[Ladr.length-1];
-						
+						TProblem tp=new TProblem(mes[2], mes[3], mes[4], mes[5], mes[6],mes[7]);
+						Gson gson=new Gson();
+						String Pproblem=gson.toJson(tp);
+						String[] Ladr = item.getName().split("\\.");
+
+						String Ladrr = Ladr[Ladr.length - 1];
 
 						System.out.println("上传文件大小" + item.getSize());
 
@@ -89,15 +94,14 @@ public class FileUploadServlet extends HttpServlet {
 						File files = new File(lujing);
 						if (Ladrr.equals("png") || Ladrr.equals("jpg")) {
 							VideoDao dao = new VideoDao();
-							dao.InsertPIp(time + "", ip+ ":8080/"
-									+ time + "." + Ladrr);
+							dao.InsertPIp(time + "", ip + ":8080/" + time + "."
+									+ Ladrr);
 						} else {
 							Video video = new Video(mes[0], ip + ":8080/"
 									+ time + "." + Ladrr, tempFile.getName(),
-									mes[1], time + "");
+									mes[1], time + "",Pproblem,mes[8]);
 							VideoDao dao = new VideoDao();
 							dao.insertVideo(video);
-
 						}
 						if (!files.exists() && !files.isDirectory()) {
 							System.out.println("//保存路径");
